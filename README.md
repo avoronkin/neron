@@ -1,4 +1,4 @@
-```
+```javascript
 const Neron = require('neron')
 
 async function server () {
@@ -15,7 +15,7 @@ server()
 ```
 
 
-```
+```javascript
 const Neron = require('neron')
 
 async function client () {
