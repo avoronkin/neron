@@ -1,0 +1,23 @@
+{
+    "name": "neron",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "lint": "eslint .",
+        "pretest": "npm run lint",
+        "test": "mocha",
+        "precommit": "npm test",
+        "prepush": "npm test"
+    },
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "eslint": "^4.6.1",
+        "husky": "^0.14.3",
+        "mocha": "^3.5.3"
+    },
+    "dependencies": {
+        "amqplib": "^0.5.1"
+    }
+}
