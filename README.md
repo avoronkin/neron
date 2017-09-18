@@ -4,9 +4,8 @@ const Neron = require('neron')
 async function server () {
     const neron = await Neron()
 
-    neron.reply('reports', async function (data) {
-        data.result = 5
-        return data
+    neron.reply('sum', function (a, b) {
+        return a + b
     })
 }
 
@@ -21,13 +20,12 @@ const Neron = require('neron')
 async function client () {
     const neron = await Neron()
 
-    neron.listen('reports.answers', async function (data) {
-        console.log('data', data)
+    neron.listen('sum.answer', function (result) {
+        assert.equal(result, 5)
+        done()
     })
 
-    neron.ask('reports', {
-        type: '11'
-    })
+    neron.ask('sum', 2, 3)
 }
 
 client()

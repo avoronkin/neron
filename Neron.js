@@ -1,4 +1,5 @@
 const amqp = require('amqplib')
+const wrap = require('wrapped')
 
 let ch
 
@@ -10,11 +11,12 @@ module.exports = async function Neron () {
 
     return {
 
-        ask: async function (topic, data) {
+        ask: async function (topic, ...data) {
             await ch.assertQueue(topic)
-            await ch.assertQueue(topic + '.answers')
+            await ch.assertQueue(topic + '.answer')
 
-            return ch.publish('', topic, serialize(data), { replyTo: topic + '.answers' })
+
+            return ch.publish('', topic, serialize(data), { replyTo: topic + '.answer' })
         },
 
         reply: async function (topic, handle) {
@@ -23,14 +25,16 @@ module.exports = async function Neron () {
             await ch.consume(topic, function (msg) {
                 const data = deserialize(msg.content)
 
-                handle(data, msg)
-                    .then((result) => {
-                        ch.ack(msg)
-                        return ch.publish('', msg.properties.replyTo, serialize(result))
-                    })
-                    .then(null, () => {
+
+                wrap(handle).apply(null, data.concat(msg).concat(function (err, ...results) {
+                    if (err) {
                         ch.nack(msg)
-                    })
+                    } else {
+                        ch.ack(msg)
+                        return ch.publish('', msg.properties.replyTo, serialize(results))
+                    }
+
+                }))
             })
         },
 
@@ -40,13 +44,13 @@ module.exports = async function Neron () {
             await ch.consume(topic, function (msg) {
                 const data = deserialize(msg.content)
 
-                handle(data, msg)
-                    .then(() => {
-                        ch.ack(msg)
-                    })
-                    .then(null, () => {
+                wrap(handle).apply(null, data.concat(msg).concat(function (err) {
+                    if (err) {
                         ch.nack(msg)
-                    })
+                    } else {
+                        ch.ack(msg)
+                    }
+                }))
             })
         },
 
