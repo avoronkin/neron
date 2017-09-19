@@ -11,8 +11,7 @@
     "rules": {
         "indent": [
             "error",
-            4,
-            { "MemberExpression": 1 }
+            4
         ],
         "linebreak-style": [
             "error",
@@ -29,10 +28,6 @@
         "space-before-function-paren": [
             "error",
             "always"
-        ],
-        "newline-per-chained-call": [
-            "error",
-            { "ignoreChainWithDepth": 2 }
         ],
         "generator-star-spacing": [
             "error",
