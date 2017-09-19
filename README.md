@@ -16,13 +16,13 @@ server()
 
 ```javascript
 const Neron = require('neron')
+const assert = require('assert')
 
 async function client () {
     const neron = await Neron()
 
     neron.listen('sum.answer', function (result) {
         assert.equal(result, 5)
-        done()
     })
 
     neron.ask('sum', 2, 3)
