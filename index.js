@@ -1,4 +1,1 @@
-module.exports = {
-    Neron: require('./lib/Neron'),
-    Radio: require('./lib/Radio')
-}
+module.exports = require('./lib/Neron')

@@ -19,6 +19,7 @@
     },
     "dependencies": {
         "amqplib": "^0.5.1",
+        "arguejs": "^0.2.3",
         "wrapped": "^1.0.1"
     }
 }
