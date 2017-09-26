@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/avoronkin/neron.svg?branch=master)](https://travis-ci.org/avoronkin/neron)
+
 ```javascript
 const Neron = require('neron')
 
