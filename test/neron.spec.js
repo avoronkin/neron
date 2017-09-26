@@ -14,7 +14,7 @@ describe('Neron', () => {
 
             await dialog.publish('sum?', 2, 3)
 
-            await new Promise(resolve => setTimeout(resolve, 50))
+            await new Promise(resolve => setTimeout(resolve, 80))
 
             assert.equal(result, 5)
         })
@@ -29,7 +29,7 @@ describe('Neron', () => {
 
             await dialog.publish('difference?', 2, 3)
 
-            await new Promise(resolve => setTimeout(resolve, 50))
+            await new Promise(resolve => setTimeout(resolve, 80))
 
             assert.equal(result, -1)
         })
