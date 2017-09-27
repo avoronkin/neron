@@ -13,6 +13,7 @@
     "license": "ISC",
     "devDependencies": {
         "eslint": "^4.6.1",
+        "http-rabbitmq-manager": "0.0.2",
         "husky": "^0.14.3",
         "mocha": "^3.5.3",
         "sinon": "^3.3.0"
@@ -20,6 +21,7 @@
     "dependencies": {
         "amqplib": "^0.5.1",
         "arguejs": "^0.2.3",
+        "bluebird": "^3.5.0",
         "wrapped": "^1.0.1"
     }
 }
