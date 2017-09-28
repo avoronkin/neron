@@ -19,20 +19,41 @@ describe('Neron', () => {
             assert.equal(result, 5)
         })
 
+        it('should dead letter', async function () {
+            const dialog = await Neron('math')
+            const handler = sinon.spy()
+            const errorHandler = sinon.spy()
+
+            await dialog.listen('difference', () => Promise.reject(new Error('lol')))
+
+            await dialog.listen('difference.error', errorHandler)
+
+            await dialog.listen('difference.result', handler)
+
+            await dialog.publish('difference?', 2, 3)
+
+            await new Promise(resolve => setTimeout(resolve, 100))
+
+            assert.equal(handler.called, false)
+            assert.equal(errorHandler.called, true)
+        })
+
         it('should work with async', async function () {
             const dialog = await Neron('math')
             let result
 
-            await dialog.listen('difference', (a, b) => Promise.resolve(a - b))
+            await dialog.listen('difference1', (a, b) => Promise.resolve(a - b))
 
-            await dialog.listen('difference.result', _result => result = _result)
+            await dialog.listen('difference1.result', _result => result = _result)
 
-            await dialog.publish('difference?', 2, 3)
+            await dialog.publish('difference1?', 2, 3)
 
             await new Promise(resolve => setTimeout(resolve, 80))
 
             assert.equal(result, -1)
         })
+
+
     })
 
     describe('pubsub', () => {
