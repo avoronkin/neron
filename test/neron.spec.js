@@ -113,7 +113,7 @@ describe('Neron', () => {
             await topic.publish('sum.calculated', 23)
             await topic.publish('sum.calculated', 34)
 
-            await new Promise(resolve => setTimeout(resolve, 10))
+            await new Promise(resolve => setTimeout(resolve, 100))
 
             assert.equal(handler1.calledTwice, true)
             assert.equal(handler2.calledTwice, true)
