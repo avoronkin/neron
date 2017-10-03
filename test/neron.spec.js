@@ -73,15 +73,15 @@ describe('Neron', () => {
             const topic = await Neron('math')
             let data1, data2
 
-            await topic.listen('sum.calculated', function (_data) {
+            await topic.listen('sum.calculated0', function (_data) {
                 data1 = _data
             })
 
-            await topic.listen('sum.calculated', function (_data) {
+            await topic.listen('sum.calculated0', function (_data) {
                 data2 = _data
             })
 
-            await topic.publish('sum.calculated', [23])
+            await topic.publish('sum.calculated0', [23])
 
             await new Promise(resolve => setTimeout(resolve, 10))
 
@@ -93,7 +93,7 @@ describe('Neron', () => {
             const topic = await Neron('math')
             let data1, data2, data3
 
-            await topic.listen('*.calculated', function (_data) {
+            await topic.listen('*.calculated5', function (_data) {
                 data1 = _data
             })
 
@@ -105,7 +105,7 @@ describe('Neron', () => {
                 data3 = _data
             })
 
-            await topic.publish('sum.calculated', [23])
+            await topic.publish('sum.calculated5', [23])
 
             await new Promise(resolve => setTimeout(resolve, 10))
 
@@ -119,11 +119,11 @@ describe('Neron', () => {
             const handler1 = sinon.spy()
             const handler2 = sinon.spy()
 
-            await topic.listen('sum.calculated', handler1)
-            await topic.listen('sum.calculated', handler2)
+            await topic.listen('sum.calculated2', handler1)
+            await topic.listen('sum.calculated2', handler2)
 
-            await topic.publish('sum.calculated', [23])
-            await topic.publish('sum.calculated', [34])
+            await topic.publish('sum.calculated2', [23])
+            await topic.publish('sum.calculated2', [34])
 
             await new Promise(resolve => setTimeout(resolve, 100))
 
@@ -139,10 +139,10 @@ describe('Neron', () => {
             const topic = await Neron('math')
             const handler1 = sinon.spy()
 
-            await topic.listen('sum.calculated', handler1)
+            await topic.listen('sum.calculated3', handler1)
 
             const correlationId = '1234567890'
-            await topic.publish('sum.calculated', [23], {
+            await topic.publish('sum.calculated3', [23], {
                 correlationId: correlationId
             })
 
