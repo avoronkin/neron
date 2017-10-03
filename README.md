@@ -25,7 +25,7 @@ async function client () {
         assert.equal(result, 5)
     })
 
-    await neron.publish('sum?', 2, 3)
+    await neron.publish('sum?', [2, 3])
 }
 
 client()

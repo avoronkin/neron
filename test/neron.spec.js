@@ -1,6 +1,7 @@
 const Neron = require('../lib/Neron')
 const assert = require('assert')
 const sinon = require('sinon')
+const _ = require('lodash')
 
 describe('Neron', () => {
     describe('rpc', () => {
@@ -12,7 +13,7 @@ describe('Neron', () => {
 
             await dialog.listen('sum.result', _result => result = _result)
 
-            await dialog.publish('sum?', 2, 3)
+            await dialog.publish('sum?', [2, 3])
 
             await new Promise(resolve => setTimeout(resolve, 80))
 
@@ -30,7 +31,7 @@ describe('Neron', () => {
 
             await dialog.listen('difference.result', handler)
 
-            await dialog.publish('difference?', 2, 3)
+            await dialog.publish('difference?', [2, 3])
 
             await new Promise(resolve => setTimeout(resolve, 100))
 
@@ -40,16 +41,27 @@ describe('Neron', () => {
 
         it('should work with async', async function () {
             const dialog = await Neron('math')
-            let result
+            let result, msg1, msg2
+            const correlationId = '888'
 
-            await dialog.listen('difference1', (a, b) => Promise.resolve(a - b))
+            await dialog.listen('difference1', function (a, b, _msg) {
+                msg1 = _msg
+                return Promise.resolve(a - b)
+            })
 
-            await dialog.listen('difference1.result', _result => result = _result)
+            await dialog.listen('difference1.result', function (_result, _msg) {
+                result = _result
+                msg2 = _msg
+            })
 
-            await dialog.publish('difference1?', 2, 3)
+            await dialog.publish('difference1?', [2, 3], {
+                correlationId: correlationId
+            })
 
-            await new Promise(resolve => setTimeout(resolve, 80))
+            await new Promise(resolve => setTimeout(resolve, 100))
 
+            assert.equal(msg1.properties.correlationId, correlationId)
+            assert.equal(msg2.properties.correlationId, correlationId)
             assert.equal(result, -1)
         })
 
@@ -69,7 +81,7 @@ describe('Neron', () => {
                 data2 = _data
             })
 
-            await topic.publish('sum.calculated', 23)
+            await topic.publish('sum.calculated', [23])
 
             await new Promise(resolve => setTimeout(resolve, 10))
 
@@ -93,7 +105,7 @@ describe('Neron', () => {
                 data3 = _data
             })
 
-            await topic.publish('sum.calculated', 23)
+            await topic.publish('sum.calculated', [23])
 
             await new Promise(resolve => setTimeout(resolve, 10))
 
@@ -110,8 +122,8 @@ describe('Neron', () => {
             await topic.listen('sum.calculated', handler1)
             await topic.listen('sum.calculated', handler2)
 
-            await topic.publish('sum.calculated', 23)
-            await topic.publish('sum.calculated', 34)
+            await topic.publish('sum.calculated', [23])
+            await topic.publish('sum.calculated', [34])
 
             await new Promise(resolve => setTimeout(resolve, 100))
 
@@ -121,6 +133,24 @@ describe('Neron', () => {
             assert.equal(handler1.args[1][0], 34)
             assert.equal(handler2.args[0][0], 23)
             assert.equal(handler2.args[1][0], 34)
+        })
+
+        it('should support publish options', async function () {
+            const topic = await Neron('math')
+            const handler1 = sinon.spy()
+
+            await topic.listen('sum.calculated', handler1)
+
+            const correlationId = '1234567890'
+            await topic.publish('sum.calculated', [23], {
+                correlationId: correlationId
+            })
+
+            await new Promise(resolve => setTimeout(resolve, 100))
+
+            assert.equal(handler1.calledOnce, true)
+            assert.equal(handler1.args[0][0], 23)
+            assert.equal(_.get(handler1.args[0][1], 'properties.correlationId'), correlationId)
         })
     })
 
