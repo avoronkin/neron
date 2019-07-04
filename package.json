@@ -1,28 +1,32 @@
 {
-    "name": "neron",
-    "version": "3.0.1",
-    "description": "",
-    "main": "index.js",
-    "scripts": {
-        "lint": "eslint .",
-        "test": "mocha",
-        "precommit": "npm run lint && npm test",
-        "prepush": "npm run lint && npm test"
-    },
-    "author": "",
-    "license": "ISC",
-    "devDependencies": {
-        "eslint": "^4.19.1",
-        "http-rabbitmq-manager": "0.0.2",
-        "husky": "^0.14.3",
-        "mocha": "^5.2.0",
-        "sinon": "^7.1.1"
-    },
-    "dependencies": {
-        "amqplib": "^0.5.2",
-        "arguejs": "^0.2.3",
-        "bluebird": "^3.5.2",
-        "lodash": "^4.17.11",
-        "wrapped": "^1.0.1"
-    }
+  "name": "neron",
+  "version": "3.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint .",
+    "test": "mocha",
+    "precommit": "npm run lint && npm test",
+    "prepush": "npm run lint && npm test",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^4.19.1",
+    "http-rabbitmq-manager": "0.0.2",
+    "husky": "^0.14.3",
+    "mocha": "^5.2.0",
+    "sinon": "^7.1.1"
+  },
+  "dependencies": {
+    "amqplib": "^0.5.2",
+    "arguejs": "^0.2.3",
+    "bluebird": "^3.5.2",
+    "lodash": "^4.17.11",
+    "wrapped": "^1.0.1",
+    "snyk": "^1.189.0"
+  },
+  "snyk": true
 }
