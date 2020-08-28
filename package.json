@@ -22,7 +22,7 @@
         "amqplib": "^0.5.2",
         "arguejs": "^0.2.3",
         "bluebird": "^3.5.2",
-        "lodash": "^4.17.11",
+        "lodash": "^4.17.17",
         "wrapped": "^1.0.1"
     }
 }
